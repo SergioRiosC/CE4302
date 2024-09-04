@@ -4,7 +4,8 @@ module stage_memory (
 
     // inputs de control unit
     input mem_reg_write,
-    input mem_mem_write,
+    //input mem_mem_write,
+    //input mem_mem_read,
     input [1:0] mem_result_src,
 
     // inputs del data path

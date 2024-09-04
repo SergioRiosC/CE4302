@@ -5,6 +5,7 @@ module control_unit (
 
     output reg_write,  //! enable de write a regsitro
     output mem_write,  //! enable de write a memoria 
+    output mem_read,  //! enable de read a memoria 
     output jump,  //! indica que se tiene una instr de salto 
     output jump_cond,  //! indica que se tiene una instr de salto condicionado
     output [2:0] jump_cond_type,  //! especifica tipo de salto condicional
@@ -52,6 +53,7 @@ module control_unit (
 
   assign reg_write = ~(op[1:0] == 2'b10);  // aplica para todos excepto tipo c y tipo g
   assign mem_write = (op == OP_C);
+  assign mem_read = (op == OP_F) && (func3 == LDM);
   assign jump = (((op == OP_D) && (func3 == JLL)) || ((op == OP_F) && (func3 == JLRL)));
   assign jump_cond = (op == OP_G);
   assign jump_cond_type = func3;  // solo importa para tipo g

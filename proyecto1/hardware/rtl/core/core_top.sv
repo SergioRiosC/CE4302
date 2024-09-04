@@ -1,14 +1,29 @@
+`default_nettype none 
+
 module core_top (
     input clk,
     input reset,
-    input [31:0] instr_memory_data,
-    input [31:0] data_memory_data,
+    
+    // instr memory master signals
+    input instr_memory_waitrequest,
+    input [31:0] instr_memory_readdata,
     output [31:0] instr_memory_addr,
+    output instr_memory_read_en,
+    output instr_memory_byteenable,
+    
+    // data memory master signals
+    input data_memory_waitrequest, 
+    input [31:0] data_memory_readdata, 
     output [31:0] data_memory_addr,
-    output [31:0] data_memory_wd,
-    output data_memory_we,
-    output instr_memory_enable
+    output [31:0] data_memory_writedata,
+    output data_memory_write_en,
+    output data_memory_read_en,
+    output data_memory_byteenable
 );
+ 
+  assign instr_memory_byteenable = 4'b1111;
+  assign data_memory_byteenable = 4'b1111;
+
 
   // ======== IF ============ /
   wire if_stall;
@@ -26,8 +41,10 @@ module core_top (
 
   // ======== EX ============ /
   wire ex_clear;
+  wire ex_stall;
   wire ex_reg_write;
   wire ex_mem_write;
+  wire ex_mem_read;
   wire ex_jump;
   wire ex_jump_cond;
   wire [2:0] ex_jump_cond_type;
@@ -49,8 +66,10 @@ module core_top (
 
   // ======== MEM =========== /
   wire mem_clear;
+  wire mem_stall;
   wire mem_reg_write;
   wire mem_mem_write;
+  wire mem_mem_read;
   wire [1:0] mem_result_src;
   wire [31:0] mem_alu_result;
   wire [31:0] mem_write_data;
@@ -63,6 +82,7 @@ module core_top (
 
   // ======== WB ============ /
   wire wb_clear;
+  wire wb_stall;
   wire wb_reg_write;
   wire [1:0] wb_result_src;
   wire [31:0] wb_alu_result;
@@ -79,8 +99,8 @@ module core_top (
   wire [1:0] ex_op2_forward;
 
   assign instr_memory_addr = if_pc_next_instr_mem;
-  assign if_instr_rd = instr_memory_data;
-  assign instr_memory_enable = ~if_stall;
+  assign if_instr_rd = instr_memory_readdata;
+  assign instr_memory_read_en = ~if_stall;
   assign mem_clear = reset;
   assign wb_clear = reset;
 
@@ -102,6 +122,7 @@ module core_top (
   stage_decode de (
       .clk(clk),
       .ex_clear(ex_clear),
+      .ex_stall(ex_stall),
       .de_instr(de_instr),
       .de_pc(de_pc),
       .de_pc_plus4(de_pc_plus4),
@@ -110,6 +131,7 @@ module core_top (
       .wb_rd(wb_rd),
       .ex_reg_write(ex_reg_write),
       .ex_mem_write(ex_mem_write),
+      .ex_mem_read(ex_mem_read),
       .ex_jump(ex_jump),
       .ex_jump_cond(ex_jump_cond),
       .ex_jump_cond_type(ex_jump_cond_type),
@@ -134,8 +156,10 @@ module core_top (
       .clk(clk),
       .reset(reset),
       .mem_clear(mem_clear),
+      .mem_stall(mem_stall),
       .ex_reg_write(ex_reg_write),
       .ex_mem_write(ex_mem_write),
+      .ex_mem_read(ex_mem_read),
       .ex_jump(ex_jump),
       .ex_jump_cond(ex_jump_cond),
       .ex_jump_cond_type(ex_jump_cond_type),
@@ -155,6 +179,7 @@ module core_top (
       .ex_op2_forward(ex_op2_forward),
       .mem_reg_write(mem_reg_write),
       .mem_mem_write(mem_mem_write),
+      .mem_mem_read(mem_mem_read),
       .mem_result_src(mem_result_src),
       .mem_alu_result(mem_alu_result),
       .mem_write_data(mem_write_data),
@@ -166,14 +191,15 @@ module core_top (
   );
 
   assign data_memory_addr = mem_alu_result;
-  assign data_memory_wd   = mem_write_data;
-  assign data_memory_we   = mem_mem_write;
-
-  assign mem_read_result  = data_memory_data;
+  assign data_memory_writedata   = mem_write_data;
+  assign data_memory_write_en   = mem_mem_write;
+  assign data_memory_read_en   = mem_mem_read;
+  assign mem_read_result  = data_memory_readdata;
 
   stage_memory mem (
       .clk(clk),
       .wb_clear(wb_clear),
+      .wb_stall(wb_stall),
       .mem_reg_write(mem_reg_write),
       .mem_mem_write(mem_mem_write),
       .mem_result_src(mem_result_src),
@@ -215,6 +241,9 @@ module core_top (
       .wb_reg_write(wb_reg_write),
       .if_stall(if_stall),
       .de_stall(de_stall),
+      .ex_stall(ex_stall),
+      .mem_stall(mem_stall),
+      .wb_stall(wb_stall),
       .de_flush(de_clear),
       .ex_flush(ex_clear),
       .ex_op1_forward(ex_op1_forward),

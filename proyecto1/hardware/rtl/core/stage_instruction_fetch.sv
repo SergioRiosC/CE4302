@@ -37,7 +37,7 @@ module stage_instruction_fetch (
       de_pc <= 0;
       de_pc_plus4 <= 0;
     end else if (~de_stall) begin
-      de_instr = if_instr_rd;
+      de_instr <= if_instr_rd;
       de_pc <= if_pc;
       de_pc_plus4 <= if_pc_plus4;
     end

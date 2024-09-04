@@ -13,3 +13,4 @@ cpp $1 \
     | sed 's/\;.*/;/' \
     > $pre 
 ../assembler/compiler/build/compiler < $pre 
+
