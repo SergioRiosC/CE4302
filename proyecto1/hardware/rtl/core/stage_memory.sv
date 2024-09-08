@@ -1,5 +1,6 @@
 module stage_memory (
     input clk,
+    input reset,
     input wb_clear,
     input wb_stall,
     // debug
@@ -24,6 +25,11 @@ module stage_memory (
     // debug 
     output reg [31:0] wb_instr,
 
+    // control de la memoria 
+    output reg [31:0] mem_data_memory_addr,
+    output reg [31:0] mem_data_memory_writedata,
+    output mem_stall_all,
+    
     // outputs de control unit
     output reg wb_reg_write,
     output reg [1:0] wb_result_src,
@@ -35,8 +41,25 @@ module stage_memory (
     output reg [31:0] wb_imm_ext,
     output reg [ 4:0] wb_rd
 );
+  
+  wire [127:0] temp_read_proxy;
+
+  load_store_unit ldstu(
+    .clk, 
+    .reset(reset),
+    .vector_op(1'b0),
+    .base_addr(mem_alu_result),
+    .in_writedata({96'b0, mem_write_data}), 
+    .in_readdata(mem_read_result), 
+    .stall(mem_stall_all), // when asserted low, value is ready
+    .current_mem_addr(mem_data_memory_addr),
+    .out_readdata(temp_read_proxy), // se ve en wb, no mem
+    .out_writedata(mem_data_memory_writedata)
+  );
+
   // memoria sync
-  assign wb_read_result = mem_read_result;
+  assign wb_read_result = temp_read_proxy[31:0];
+  
   always @(posedge clk) begin
     if (wb_clear) begin
       wb_reg_write <= 0;

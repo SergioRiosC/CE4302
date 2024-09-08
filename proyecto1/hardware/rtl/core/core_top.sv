@@ -107,6 +107,7 @@ module core_top (
   // salidas hazard unit
   wire [1:0] ex_op1_forward;
   wire [1:0] ex_op2_forward;
+  wire stall_all;
 
   assign instr_memory_addr = if_pc_next_instr_mem;
   assign instr_memory_read_en = ~if_stall;
@@ -226,14 +227,15 @@ module core_top (
       .ex_pc_target(ex_pc_target)
   );
 
-  assign data_memory_addr = mem_alu_result;
-  assign data_memory_writedata   = mem_write_data;
+  //assign data_memory_addr = mem_alu_result;
+  //assign data_memory_writedata   = mem_write_data;
   assign data_memory_write_en   = mem_mem_write;
   assign data_memory_read_en   = mem_mem_read;
   assign mem_read_result  = data_memory_readdata;
 
   stage_memory mem (
       .clk(clk),
+      .reset(reset),
       .wb_clear(wb_clear),
       .wb_stall(wb_stall),
       .mem_instr(mem_instr),
@@ -246,6 +248,9 @@ module core_top (
       .mem_imm_ext(mem_imm_ext),
       .mem_rd(mem_rd),
       .mem_read_result(mem_read_result),
+      .mem_data_memory_addr(data_memory_addr),
+      .mem_data_memory_writedata(data_memory_writedata),
+      .mem_stall_all(stall_all),
       .wb_instr(wb_instr),
       .wb_reg_write(wb_reg_write),
       .wb_result_src(wb_result_src),
@@ -277,7 +282,7 @@ module core_top (
       .mem_reg_write(mem_reg_write),
       .wb_rd(wb_rd),
       .wb_reg_write(wb_reg_write),
-      .stall_all(1'b0), //! intencional que triggeree error
+      .stall_all(stall_all), //! intencional que triggeree error
       .if_stall(if_stall),
       .de_stall(de_stall),
       .ex_stall(ex_stall),
