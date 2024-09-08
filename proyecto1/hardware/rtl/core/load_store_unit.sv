@@ -1,4 +1,4 @@
-`default_nettype none
+//`default_nettype none
 
 typedef enum logic[3:0]{
     SCALAR,

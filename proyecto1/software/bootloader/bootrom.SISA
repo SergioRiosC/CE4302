@@ -1,0 +1,41 @@
+#include "UTIL.SISA"
+
+start:
+    CLIR, g0,0x56; # semilla
+    CLIR, g1,RAM_BASE; # addr 
+    STM,  g0,g1,0; # 
+    CLIR, g2,0; # i 
+    CLIR, g3,100; # iteraciones
+    loop:
+        SUMI, g2,g2,1; # i++
+        SUM,  arg0,zero,g1; # pasar a reg de arg0
+        CALL, gen_numero; # saltar
+        SUMI, g1,g1,4; # addr + 4
+        STM,  arg0,g1,NO_OFFSET; # almacenar palabra en RAM         
+        JILT, g2,g3,loop; 
+end:
+    JLL,zero,end; 
+
+
+gen_numero:
+    LDM,t0,arg0,0; # cargar valor actual 
+
+    ANDI, t1, t0, 0x10; #x^4 
+    SLLI, t1, t1, 0x3;  
+    ANDI, t2, t0, 0x08; #x^5 
+    SLLI, t2, t2, 0x4;
+    ANDI, t3, t0, 0x04; #x^6  
+    SLLI, t3, t3, 0x5;
+    ANDI, t4, t0, 0x01; #x^8  
+    SLLI, t4, t4, 0x7;
+
+    XOR, t5, t1, t2; 
+    XOR, t5, t5, t3;
+    XOR, t5, t5, t4; 
+
+    SLRI, t0, t0, 0x1; 
+    ANDI, t0, t0, 0x7F; 
+    OR,   t0, t0, t5; 
+
+    MOV(arg0,t0); 
+    JBA;

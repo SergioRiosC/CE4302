@@ -3,6 +3,8 @@ module stage_execute (
     input reset, 
     input mem_clear,
     input mem_stall,
+    // debug
+    input [31:0] ex_instr, 
     // inputs de control unit
     input ex_reg_write,
     input ex_mem_write,
@@ -32,12 +34,13 @@ module stage_execute (
     input [1:0] ex_op1_forward,
     input [1:0] ex_op2_forward,
 
+    // debug
+    output reg [31:0] mem_instr,
     // outputs de control unit
     output reg mem_reg_write,
     output reg mem_mem_write,
     output reg mem_mem_read,
     output reg [1:0] mem_result_src,
-
     // outputs del data path
     output reg [31:0] mem_alu_result,
     output reg [31:0] mem_write_data,
@@ -121,6 +124,8 @@ module stage_execute (
       mem_imm_ext          <= 0;
       mem_rd               <= 0;
     end else if(~mem_stall) begin
+      //debug
+      mem_instr <= ex_instr;
       // outputs de control unit
       mem_reg_write        <= ex_reg_write;
       mem_mem_write        <= ex_mem_write;

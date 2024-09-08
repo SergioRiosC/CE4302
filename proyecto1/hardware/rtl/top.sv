@@ -1,5 +1,5 @@
 //`define ENABLE_HPS
-`default_nettype none
+//`default_nettype none
 
 module top (
 
@@ -98,47 +98,31 @@ module top (
     input [3:0] SW
 );
 
+  // KEY 0 es clk manual 
+  wire debug_mode;
+  assign debug_mode = SW[1];
+
+  wire manual_clk;
+  assign manual_clk = KEY[0];
+
+	wire [31:0] addr;
+
+	assign LED[0] = addr[0];
+
   wire clk;
-  assign clk = FPGA_CLK1_50;
+  assign clk = (debug_mode)?  FPGA_CLK1_50 : manual_clk;
+
   wire reset;
   assign reset = SW[0];
-  logic [31:0] instr_memory_data;
-  logic [31:0] data_memory_data;
-  logic [31:0] instr_memory_addr;
-  logic [31:0] data_memory_addr;
-  logic [31:0] data_memory_wd;
-  logic instr_memory_enable;
-  logic data_memory_we;
-
-  core_top dut (
-      .clk(clk),
-      .reset(reset),
-      .instr_memory_data(instr_memory_data),
-      .data_memory_data(data_memory_data),
-      .instr_memory_addr(instr_memory_addr),
-      .data_memory_addr(data_memory_addr),
-      .data_memory_wd(data_memory_wd),
-      .data_memory_we(data_memory_we),
-      .instr_memory_enable(instr_memory_enable)
-  );
-
-  logic rom0_we;  // dummy
-  logic [31:0] rom0_addr;
-  logic [31:0] rom0_wd;  // dummy
-  logic [31:0] rom0_rd;
-
-  rom_2port #(
-      .INIT_FILE("../../software/reference_asm/output_files/reverb.txt")
-  ) rom0 (
-      .clk_a (clk),
-      .clk_b (clk),
-      .en_a  (instr_memory_enable),
-      .en_b  (1'b1),
-      .addr_a(instr_memory_addr),
-      .addr_b(rom0_addr),
-      .rd_a  (instr_memory_data),
-      .rd_b  (rom0_rd)
-  );
+  sisa_test dut(
+		.clk_clk(clk),                //          clk.clk
+		.instr_export_instr_if(addr),  // instr_export.instr_if
+		//.instr_export_instr_de,  //             .instr_de
+		//.instr_export_instr_ex,  //             .instr_ex
+		//.instr_export_instr_mem, //             .instr_mem
+		//.instr_export_instr_wb,  //             .instr_wb
+		.reset_reset_n(reset)           //        reset.reset_n
+	);
 
 
 endmodule

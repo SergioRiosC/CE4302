@@ -47,7 +47,7 @@ set_global_assignment -name PROJECT_OUTPUT_DIRECTORY output_files
 set_global_assignment -name MIN_CORE_JUNCTION_TEMP "-40"
 set_global_assignment -name MAX_CORE_JUNCTION_TEMP 100
 set_global_assignment -name ERROR_CHECK_FREQUENCY_DIVISOR 256
-set_global_assignment -name EDA_SIMULATION_TOOL "<None>"
+set_global_assignment -name EDA_SIMULATION_TOOL "ModelSim-Altera (SystemVerilog)"
 set_global_assignment -name EDA_GENERATE_FUNCTIONAL_NETLIST OFF -section_id eda_board_design_timing
 set_global_assignment -name EDA_GENERATE_FUNCTIONAL_NETLIST OFF -section_id eda_board_design_symbol
 set_global_assignment -name EDA_GENERATE_FUNCTIONAL_NETLIST OFF -section_id eda_board_design_signal_integrity
@@ -59,8 +59,6 @@ set_global_assignment -name POWER_PRESET_COOLING_SOLUTION "23 MM HEAT SINK WITH 
 set_global_assignment -name POWER_BOARD_THERMAL_MODEL "NONE (CONSERVATIVE)"
 set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id alu_tb
 set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME alu_tb -section_id alu_tb
-set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id system_tb
-set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME system_tb -section_id system_tb
 set_global_assignment -name ENABLE_OCT_DONE OFF
 set_global_assignment -name ENABLE_CONFIGURATION_PINS OFF
 set_global_assignment -name ENABLE_BOOT_SEL_PIN OFF
@@ -528,48 +526,14 @@ set_location_assignment PIN_W21 -to SW[2]
 set_location_assignment PIN_W20 -to SW[3]
 
 
-set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id lfsr_test_tb
-set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME lfsr_test_tb -section_id lfsr_test_tb
-set_global_assignment -name EDA_TEST_BENCH_FILE ../rtl/core/tb/alu_tb.sv -section_id alu_tb
-set_global_assignment -name EDA_TEST_BENCH_FILE ../rtl/core/stage_writeback.sv -section_id system_tb
-set_global_assignment -name EDA_TEST_BENCH_FILE ../rtl/core/stage_memory.sv -section_id system_tb
-set_global_assignment -name EDA_TEST_BENCH_FILE ../rtl/core/stage_instruction_fetch.sv -section_id system_tb
-set_global_assignment -name EDA_TEST_BENCH_FILE ../rtl/core/stage_execute.sv -section_id system_tb
-set_global_assignment -name EDA_TEST_BENCH_FILE ../rtl/core/stage_decode.sv -section_id system_tb
-set_global_assignment -name EDA_TEST_BENCH_FILE ../rtl/core/register_file.sv -section_id system_tb
-set_global_assignment -name EDA_TEST_BENCH_FILE ../rtl/core/jump_cond_ctrl.sv -section_id system_tb
-set_global_assignment -name EDA_TEST_BENCH_FILE ../rtl/core/imm_extend.sv -section_id system_tb
-set_global_assignment -name EDA_TEST_BENCH_FILE ../rtl/core/hazard_unit.sv -section_id system_tb
-set_global_assignment -name EDA_TEST_BENCH_FILE ../rtl/core/core_top.sv.bak -section_id system_tb
-set_global_assignment -name EDA_TEST_BENCH_FILE ../rtl/core/core_top.sv -section_id system_tb
-set_global_assignment -name EDA_TEST_BENCH_FILE ../rtl/core/control_unit.sv -section_id system_tb
-set_global_assignment -name EDA_TEST_BENCH_FILE ../rtl/core/alu.sv -section_id system_tb
-set_global_assignment -name EDA_TEST_BENCH_FILE ../rtl/system_tb.sv -section_id system_tb
-set_global_assignment -name EDA_TEST_BENCH_FILE ../rtl/simple_interconnect.sv -section_id system_tb
-set_global_assignment -name EDA_TEST_BENCH_FILE ../rtl/rom_2port.sv -section_id system_tb
-set_global_assignment -name EDA_TEST_BENCH_FILE ../rtl/ram_2port_1rd2wr.sv -section_id system_tb
-set_global_assignment -name EDA_TEST_BENCH_FILE ../rtl/ram_1port.sv -section_id system_tb
-set_global_assignment -name EDA_TEST_BENCH_FILE ../rtl/top.sv -section_id lfsr_test_tb
-set_global_assignment -name EDA_TEST_BENCH_FILE ../rtl/simple_interconnect.sv -section_id lfsr_test_tb
-set_global_assignment -name EDA_TEST_BENCH_FILE ../rtl/rom_2port.sv -section_id lfsr_test_tb
-set_global_assignment -name EDA_TEST_BENCH_FILE ../rtl/rom_1port.sv -section_id lfsr_test_tb
-set_global_assignment -name EDA_TEST_BENCH_FILE ../rtl/ram_2port_1rd2wr.sv -section_id lfsr_test_tb
-set_global_assignment -name EDA_TEST_BENCH_FILE ../rtl/ram_1port.sv -section_id lfsr_test_tb
-set_global_assignment -name EDA_TEST_BENCH_FILE ../rtl/lfsr_test_tb.sv -section_id lfsr_test_tb
-set_global_assignment -name EDA_TEST_BENCH_FILE ../rtl/de10nano_pio.sv -section_id lfsr_test_tb
-set_global_assignment -name EDA_TEST_BENCH_FILE ../rtl/core/stage_writeback.sv -section_id lfsr_test_tb
-set_global_assignment -name EDA_TEST_BENCH_FILE ../rtl/core/stage_memory.sv -section_id lfsr_test_tb
-set_global_assignment -name EDA_TEST_BENCH_FILE ../rtl/core/stage_instruction_fetch.sv -section_id lfsr_test_tb
-set_global_assignment -name EDA_TEST_BENCH_FILE ../rtl/core/stage_execute.sv -section_id lfsr_test_tb
-set_global_assignment -name EDA_TEST_BENCH_FILE ../rtl/core/stage_decode.sv -section_id lfsr_test_tb
-set_global_assignment -name EDA_TEST_BENCH_FILE ../rtl/core/register_file.sv -section_id lfsr_test_tb
-set_global_assignment -name EDA_TEST_BENCH_FILE ../rtl/core/jump_cond_ctrl.sv -section_id lfsr_test_tb
-set_global_assignment -name EDA_TEST_BENCH_FILE ../rtl/core/imm_extend.sv -section_id lfsr_test_tb
-set_global_assignment -name EDA_TEST_BENCH_FILE ../rtl/core/hazard_unit.sv -section_id lfsr_test_tb
-set_global_assignment -name EDA_TEST_BENCH_FILE ../rtl/core/core_top.sv.bak -section_id lfsr_test_tb
-set_global_assignment -name EDA_TEST_BENCH_FILE ../rtl/core/core_top.sv -section_id lfsr_test_tb
-set_global_assignment -name EDA_TEST_BENCH_FILE ../rtl/core/control_unit.sv -section_id lfsr_test_tb
-set_global_assignment -name EDA_TEST_BENCH_FILE ../rtl/core/alu.sv -section_id lfsr_test_tb
+set_global_assignment -name EDA_NATIVELINK_SIMULATION_TEST_BENCH system_tb -section_id eda_simulation
+set_global_assignment -name EDA_OUTPUT_DATA_FORMAT "SYSTEMVERILOG HDL" -section_id eda_simulation
+set_global_assignment -name EDA_TEST_BENCH_ENABLE_STATUS TEST_BENCH_MODE -section_id eda_simulation
+set_global_assignment -name EDA_TIME_SCALE "1 ps" -section_id eda_simulation
+set_global_assignment -name EDA_TEST_BENCH_NAME system_tb -section_id eda_simulation
+set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id system_tb
+set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME system_tb -section_id system_tb
+set_global_assignment -name QSYS_FILE sisa_test.qsys
 set_global_assignment -name SYSTEMVERILOG_FILE ../rtl/core/load_store_unit.sv
 set_global_assignment -name SYSTEMVERILOG_FILE ../rtl/de10nano_pio.sv
 set_global_assignment -name SYSTEMVERILOG_FILE ../rtl/rom_1port.sv
@@ -595,3 +559,30 @@ set_global_assignment -name SYSTEMVERILOG_FILE ../rtl/core/tb/alu_tb.sv
 set_global_assignment -name SYSTEMVERILOG_FILE ../rtl/core/tb/control_unit_tb.sv
 set_global_assignment -name SYSTEMVERILOG_FILE ../rtl/core/tb/imm_extend_tb.sv
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
+set_global_assignment -name EDA_TEST_BENCH_FILE ../rtl/system_tb.sv -section_id system_tb
+set_global_assignment -name EDA_TEST_BENCH_FILE sisa_test/simulation/sisa_test.sip -section_id system_tb
+set_global_assignment -name EDA_TEST_BENCH_FILE sisa_test/simulation/sisa_test.v -section_id system_tb
+set_global_assignment -name EDA_TEST_BENCH_FILE sisa_test/simulation/submodules/altera_merlin_master_translator.sv -section_id system_tb
+set_global_assignment -name EDA_TEST_BENCH_FILE sisa_test/simulation/submodules/altera_merlin_slave_translator.sv -section_id system_tb
+set_global_assignment -name EDA_TEST_BENCH_FILE sisa_test/simulation/submodules/altera_reset_controller.sdc -section_id system_tb
+set_global_assignment -name EDA_TEST_BENCH_FILE sisa_test/simulation/submodules/altera_reset_controller.v -section_id system_tb
+set_global_assignment -name EDA_TEST_BENCH_FILE sisa_test/simulation/submodules/altera_reset_synchronizer.v -section_id system_tb
+set_global_assignment -name EDA_TEST_BENCH_FILE sisa_test/simulation/submodules/alu.sv -section_id system_tb
+set_global_assignment -name EDA_TEST_BENCH_FILE sisa_test/simulation/submodules/control_unit.sv -section_id system_tb
+set_global_assignment -name EDA_TEST_BENCH_FILE sisa_test/simulation/submodules/core_top.sv -section_id system_tb
+set_global_assignment -name EDA_TEST_BENCH_FILE sisa_test/simulation/submodules/hazard_unit.sv -section_id system_tb
+set_global_assignment -name EDA_TEST_BENCH_FILE sisa_test/simulation/submodules/imm_extend.sv -section_id system_tb
+set_global_assignment -name EDA_TEST_BENCH_FILE sisa_test/simulation/submodules/jump_cond_ctrl.sv -section_id system_tb
+set_global_assignment -name EDA_TEST_BENCH_FILE sisa_test/simulation/submodules/load_store_unit.sv -section_id system_tb
+set_global_assignment -name EDA_TEST_BENCH_FILE sisa_test/simulation/submodules/register_file.sv -section_id system_tb
+set_global_assignment -name EDA_TEST_BENCH_FILE sisa_test/simulation/submodules/sisa_test_mm_interconnect_0.v -section_id system_tb
+set_global_assignment -name EDA_TEST_BENCH_FILE sisa_test/simulation/submodules/sisa_test_mm_interconnect_1.v -section_id system_tb
+set_global_assignment -name EDA_TEST_BENCH_FILE sisa_test/simulation/submodules/sisa_test_ram.v -section_id system_tb
+set_global_assignment -name EDA_TEST_BENCH_FILE sisa_test/simulation/submodules/sisa_test_rom.v -section_id system_tb
+set_global_assignment -name EDA_TEST_BENCH_FILE sisa_test/simulation/submodules/stage_decode.sv -section_id system_tb
+set_global_assignment -name EDA_TEST_BENCH_FILE sisa_test/simulation/submodules/stage_execute.sv -section_id system_tb
+set_global_assignment -name EDA_TEST_BENCH_FILE sisa_test/simulation/submodules/stage_instruction_fetch.sv -section_id system_tb
+set_global_assignment -name EDA_TEST_BENCH_FILE sisa_test/simulation/submodules/stage_memory.sv -section_id system_tb
+set_global_assignment -name EDA_TEST_BENCH_FILE sisa_test/simulation/submodules/stage_writeback.sv -section_id system_tb
+set_global_assignment -name EDA_TEST_BENCH_FILE ../../software/bootloader/output_files/bootrom.mif -section_id system_tb
+set_global_assignment -name HEX_FILE ../../software/bootloader/output_files/bootrom.hex

@@ -12,6 +12,9 @@ module stage_decode (
     input [31:0] wb_result,
     input wb_reg_write,
     input [4:0] wb_rd,
+    
+    // debug 
+    output reg [31:0] ex_instr,
 
     // outputs de control unit
     output reg ex_reg_write,
@@ -25,7 +28,6 @@ module stage_decode (
     output reg ex_alu_src_op2,
     output reg ex_pc_target_src,
     output reg [1:0] ex_result_src,
-
 
     // outputs del data path
     output reg [31:0] ex_pc,
@@ -136,6 +138,9 @@ module stage_decode (
       ex_rs1            <= 0;
       ex_rs2            <= 0;
     end else if(~ex_stall) begin
+      // debug 
+      ex_instr <= de_instr;
+
       // outputs de control unit
       ex_reg_write      <= reg_write;
       ex_mem_write      <= mem_write;

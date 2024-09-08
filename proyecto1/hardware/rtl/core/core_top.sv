@@ -1,26 +1,33 @@
-`default_nettype none 
+//`default_nettype none 
 
 module core_top (
     input clk,
     input reset,
     
     // instr memory master signals
-    input instr_memory_waitrequest,
-    input [31:0] instr_memory_readdata,
+    //input instr_memory_waitrequest,
+    input  [31:0] instr_memory_readdata,
     output [31:0] instr_memory_addr,
     output instr_memory_read_en,
-    output instr_memory_byteenable,
+    output [3:0] instr_memory_byteenable,
     
     // data memory master signals
-    input data_memory_waitrequest, 
-    input [31:0] data_memory_readdata, 
+    //input data_memory_waitrequest, 
+    input  [31:0] data_memory_readdata, 
     output [31:0] data_memory_addr,
     output [31:0] data_memory_writedata,
     output data_memory_write_en,
     output data_memory_read_en,
-    output data_memory_byteenable
+    output [3:0] data_memory_byteenable,
+
+    // debug signals 
+    output [31:0] instr_if,
+    output [31:0] instr_de,
+    output [31:0] instr_ex,
+    output [31:0] instr_mem,
+    output [31:0] instr_wb
 );
- 
+
   assign instr_memory_byteenable = 4'b1111;
   assign data_memory_byteenable = 4'b1111;
 
@@ -42,6 +49,7 @@ module core_top (
   // ======== EX ============ /
   wire ex_clear;
   wire ex_stall;
+  wire [31:0] ex_instr;  
   wire ex_reg_write;
   wire ex_mem_write;
   wire ex_mem_read;
@@ -67,6 +75,7 @@ module core_top (
   // ======== MEM =========== /
   wire mem_clear;
   wire mem_stall;
+  wire [31:0] mem_instr;  
   wire mem_reg_write;
   wire mem_mem_write;
   wire mem_mem_read;
@@ -83,6 +92,7 @@ module core_top (
   // ======== WB ============ /
   wire wb_clear;
   wire wb_stall;
+  wire [31:0] wb_instr;  
   wire wb_reg_write;
   wire [1:0] wb_result_src;
   wire [31:0] wb_alu_result;
@@ -99,10 +109,33 @@ module core_top (
   wire [1:0] ex_op2_forward;
 
   assign instr_memory_addr = if_pc_next_instr_mem;
-  assign if_instr_rd = instr_memory_readdata;
   assign instr_memory_read_en = ~if_stall;
+  //! OJO EL HACK UUUUFFFF 
+  // La cosa es que parece que tener un read enable no hace mucho para mantener 
+  // la instrucción que está esperando en el puerto de read de las memorias que
+  // se instancian en Qsys. Solución? Un latch interno al CPU
+  // Si el ciclo anterior hubo un deassert de read_en, se escoge el valor del 
+  // latch para sacar la instrucción que va al IF en vez de lo que se lee en el
+  // puerto de memoria 
+  reg [31:0] saved_instruction;
+  reg [31:0] use_current_instr_mem_readdata;
+  reg [31:0] last_reset;
+  always @(posedge clk) begin 
+    last_reset <= reset;
+    use_current_instr_mem_readdata <= instr_memory_read_en | last_reset;
+    saved_instruction <= if_instr_rd;
+  end
+  assign if_instr_rd = (use_current_instr_mem_readdata)? instr_memory_readdata : saved_instruction;
+  //assign instr_memory_read_en = 1'b1;
   assign mem_clear = reset;
   assign wb_clear = reset;
+
+  // debug signals 
+  assign instr_if = if_instr_rd;
+  assign instr_de = de_instr;
+  assign instr_ex = ex_instr;
+  assign instr_mem = mem_instr;
+  assign instr_wb = wb_instr;
 
   stage_instruction_fetch instf (
       .clk(clk),
@@ -129,6 +162,7 @@ module core_top (
       .wb_result(wb_result),
       .wb_reg_write(wb_reg_write),
       .wb_rd(wb_rd),
+      .ex_instr(ex_instr),
       .ex_reg_write(ex_reg_write),
       .ex_mem_write(ex_mem_write),
       .ex_mem_read(ex_mem_read),
@@ -157,6 +191,7 @@ module core_top (
       .reset(reset),
       .mem_clear(mem_clear),
       .mem_stall(mem_stall),
+      .ex_instr(ex_instr),
       .ex_reg_write(ex_reg_write),
       .ex_mem_write(ex_mem_write),
       .ex_mem_read(ex_mem_read),
@@ -177,6 +212,7 @@ module core_top (
       .wb_result(wb_result),
       .ex_op1_forward(ex_op1_forward),
       .ex_op2_forward(ex_op2_forward),
+      .mem_instr(mem_instr),
       .mem_reg_write(mem_reg_write),
       .mem_mem_write(mem_mem_write),
       .mem_mem_read(mem_mem_read),
@@ -200,8 +236,9 @@ module core_top (
       .clk(clk),
       .wb_clear(wb_clear),
       .wb_stall(wb_stall),
+      .mem_instr(mem_instr),
       .mem_reg_write(mem_reg_write),
-      .mem_mem_write(mem_mem_write),
+      //.mem_mem_write(mem_mem_write),
       .mem_result_src(mem_result_src),
       .mem_alu_result(mem_alu_result),
       .mem_write_data(mem_write_data),
@@ -209,6 +246,7 @@ module core_top (
       .mem_imm_ext(mem_imm_ext),
       .mem_rd(mem_rd),
       .mem_read_result(mem_read_result),
+      .wb_instr(wb_instr),
       .wb_reg_write(wb_reg_write),
       .wb_result_src(wb_result_src),
       .wb_alu_result(wb_alu_result),
@@ -239,6 +277,7 @@ module core_top (
       .mem_reg_write(mem_reg_write),
       .wb_rd(wb_rd),
       .wb_reg_write(wb_reg_write),
+      .stall_all(1'b0), //! intencional que triggeree error
       .if_stall(if_stall),
       .de_stall(de_stall),
       .ex_stall(ex_stall),

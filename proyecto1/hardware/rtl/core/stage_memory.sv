@@ -1,6 +1,9 @@
 module stage_memory (
     input clk,
     input wb_clear,
+    input wb_stall,
+    // debug
+    input [31:0] mem_instr,
 
     // inputs de control unit
     input mem_reg_write,
@@ -17,6 +20,9 @@ module stage_memory (
 
     // input de la memoria de datos 
     input [31:0] mem_read_result,
+
+    // debug 
+    output reg [31:0] wb_instr,
 
     // outputs de control unit
     output reg wb_reg_write,
@@ -39,7 +45,10 @@ module stage_memory (
       wb_pc_plus_4 <= 0;
       wb_imm_ext <= 0;
       wb_rd <= 0;
-    end else begin
+    end else if(~wb_stall) begin
+      //debug 
+      wb_instr <= mem_instr;
+
       wb_reg_write <= mem_reg_write;
       wb_result_src <= mem_result_src;
       wb_alu_result <= mem_alu_result;
