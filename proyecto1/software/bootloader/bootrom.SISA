@@ -1,7 +1,23 @@
 #include "UTIL.SISA"
 
+#define UART_BASE 0x2000
+
+uart_test:
+    CLIR, g0, UART_BASE; 
+    CLIR, g1, 'H';
+    CLIR, g2, 'E';
+    CLIR, g3, 'L';
+    CLIR, g4, 'L';
+    CLIR, g5, 'O';
+    STM, g1, g0, 0;
+    STM, g2, g0, 0;
+    STM, g3, g0, 0;
+    STM, g4, g0, 0;
+    STM, g5, g0, 0;
+
+
 start:
-    CLIR, g0,0x56; # semilla
+    CLIR, g0,'V'; # semilla
     CLIR, g1,RAM_BASE; # addr 
     STM,  g0,g1,0; # 
     CLIR, g2,0; # i 
