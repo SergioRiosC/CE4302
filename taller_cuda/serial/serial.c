@@ -21,8 +21,9 @@ int sobel_y[3][3] = {
     { 1,  2,  1}
 };
 
-// Aplicar el filtro Sobel a un solo canal 
-void filterChannel(int16_t* input, int rows, int cols, int16_t* output) {
+
+// Aplicar el filtro Sobel a una imagen (escala de grises)
+void edgeDetectionSerial(int16_t* input, int rows, int cols, int16_t* output) {
     int gx, gy;
 
     for (int i = 1; i < rows - 1; i++) {
@@ -32,7 +33,7 @@ void filterChannel(int16_t* input, int rows, int cols, int16_t* output) {
 
             for (int x = -1; x <= 1; x++) {
                 for (int y = -1; y <= 1; y++) {
-                    int input_index = ((i + x) * cols + (j + y));  
+                    int input_index = (i + x) * cols + (j + y);
                     gx += input[input_index] * sobel_x[x + 1][y + 1];
                     gy += input[input_index] * sobel_y[x + 1][y + 1];
                 }
@@ -43,58 +44,11 @@ void filterChannel(int16_t* input, int rows, int cols, int16_t* output) {
             if (magnitude > 255) {
                 magnitude = 255;
             }
-            
-            output[i * cols + j] = (int16_t)magnitude;  
+
+            output[i * cols + j] = (int16_t)magnitude;
         }
     }
 }
-
-
-// Filtro serial edge detection aplicado a cada canal (RGB)
-void edgeDetectionSerial(int16_t* matriz_entrada, int rows, int cols, int16_t* matriz_salida) {
-    //Canales de entrada (originales)
-    int16_t* red = (int16_t*) malloc(rows * cols * sizeof(int16_t));
-    int16_t* green = (int16_t*) malloc(rows * cols * sizeof(int16_t));
-    int16_t* blue = (int16_t*) malloc(rows * cols * sizeof(int16_t));
-
-    //Canales de salida (filtrados)
-    int16_t* red_edges = (int16_t*) malloc(rows * cols * sizeof(int16_t));
-    int16_t* green_edges = (int16_t*) malloc(rows * cols * sizeof(int16_t));
-    int16_t* blue_edges = (int16_t*) malloc(rows * cols * sizeof(int16_t));
-
-    // Extraer canales R, G, B de la matriz de entrada
-    for (int i = 0; i < rows; i++) {
-        for (int j = 0; j < cols; j++) {
-            int index = (i * cols + j) * 3;
-            red[i * cols + j] = matriz_entrada[index];
-            green[i * cols + j] = matriz_entrada[index + 1];
-            blue[i * cols + j] = matriz_entrada[index + 2];
-        }
-    }
-
-    // Aplicar el filtro Sobel en cada canal -> filterChannel
-    filterChannel(red, rows, cols, red_edges);
-    filterChannel(green, rows, cols, green_edges);
-    filterChannel(blue, rows, cols, blue_edges);
-
-    // Guardar los resultados en la matriz de salida
-    for (int i = 0; i < rows; i++) {
-        for (int j = 0; j < cols; j++) {
-            int index = (i * cols + j) * 3;
-            matriz_salida[index] = red_edges[i * cols + j];
-            matriz_salida[index + 1] = green_edges[i * cols + j];
-            matriz_salida[index + 2] = blue_edges[i * cols + j];
-        }
-    }
-
-    free(red);
-    free(green);
-    free(blue);
-    free(red_edges);
-    free(green_edges);
-    free(blue_edges);
-}
-
 
 int main(int argc, char** argv){
     if(argc < 3){
