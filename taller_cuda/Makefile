@@ -24,9 +24,9 @@ build/cuda: ## compile cuda code
 
 test: build_all ## executes all codes for one test image, saves result pngs in build folder
 	python3 img2file.py -i imagenes/test$(TEST).png -o build/test$(TEST).txt 
-	./build/serial build/test$(TEST).txt -o build/test$(TEST)s.txt
-	./build/neon build/test$(TEST).txt -o build/test$(TEST)n.txt
-	./build/cuda build/test$(TEST).txt -o build/test$(TEST)c.txt
+	./build/serial build/test$(TEST).txt build/test$(TEST)s.txt
+	./build/neon build/test$(TEST).txt build/test$(TEST)n.txt
+	./build/cuda build/test$(TEST).txt build/test$(TEST)c.txt
 	python3 file2img.py -i build/test$(TEST)s.txt -o build/test$(TEST)_serial.png 
 	python3 file2img.py -i build/test$(TEST)n.txt -o build/test$(TEST)_neon.png 
 	python3 file2img.py -i build/test$(TEST)c.txt -o build/test$(TEST)_cuda.png 
