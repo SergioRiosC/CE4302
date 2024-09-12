@@ -81,7 +81,13 @@ int main(int argc, char** argv){
         ++i;
     }
     
+    clock_t start = clock();
+
     edgeDetectionSerial(src_image, rows, cols, out_image);
+
+    clock_t end = clock();
+
+    printf("Filtro tomó: %lf segundos\n", ((double)(end - start))/CLOCKS_PER_SEC);
     
     fprintf(output, "%d\n%d\n", rows, cols);
     for(int i = 0; i < pixel_count; i++){
