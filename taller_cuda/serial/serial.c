@@ -3,6 +3,7 @@
 #include <errno.h>
 #include <inttypes.h>
 #include <string.h>
+#include <time.h>
 #include <math.h>
 
 #define WIDTH  256 // Ancho de la imagen
