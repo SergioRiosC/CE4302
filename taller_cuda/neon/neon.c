@@ -93,10 +93,13 @@ int main(int argc, char** argv){
 
     clock_t end = clock();
 
-    printf("Filtro tomó: %lf segundos", ((double)(end - start))/CLOCKS_PER_SEC);
+    printf("Filtro tomó: %lf segundos\n", ((double)(end - start))/CLOCKS_PER_SEC);
     
     fprintf(output, "%d\n%d\n", rows, cols);
     for(int i=0; i < pixel_count; i++){
         fprintf(output, "%d\n", *(out_image+i));
     }
+
+    free(src_image);
+    free(out_image);
 }
