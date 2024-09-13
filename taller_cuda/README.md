@@ -53,3 +53,7 @@ una máquina con el ambiente descrito al inicio, para compilar y ejecutar:
 nvcc multi_matrices.cu -o build/multi_matrices
 ./build/multi_matrices
 ```
+
+La ejecución también puede ser realizada desde la herramienta en línea 
+Compiler explorer: <https://godbolt.org/z/bdo4b1dPb> 
+
