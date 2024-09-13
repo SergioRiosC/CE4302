@@ -22,8 +22,8 @@ int main() {
     int size = N * N * sizeof(int);
 
     for (int i = 0; i < N * N; i++) {
-        a[i] = i + 1;  // cambiar los valores para probar
-        b[i] = i + 1;  
+        a[i] = i + 3;  // cambiar los valores para probar
+        b[i] = i + 6;  
     }
 
     cudaMalloc((void **)&d_a, size);
