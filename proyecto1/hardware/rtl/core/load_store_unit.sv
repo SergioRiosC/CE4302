@@ -12,7 +12,7 @@ module load_store_unit (
     input vector_op,
     input [31:0] base_addr,
     input [127:0] in_writedata, 
-    input [32:0] in_readdata, 
+    input [31:0] in_readdata, 
     output reg stall, // when asserted low, value is ready
     output reg [31:0] current_mem_addr,
     output reg [127:0] out_readdata, // se ve en wb, no mem
@@ -65,7 +65,8 @@ always @(posedge clk) begin
         end 
         VECTOR_EXIT: begin 
             vector_readdata[32*rd_wait_cycles +:32] <= in_readdata; 
-            wr_wait_cycles <=0;
+            //wr_wait_cycles <=0;
+            //wr_wait_cycles <= wr_wait_cycles +1;
             // resto del estado se actualiza en el check de reset
         end 
     endcase 
@@ -85,12 +86,12 @@ always @(*) begin
         end 
         VECTOR_ACTIVE: begin 
             stall = 1;
-            current_mem_addr = base_addr + ({rd_wait_cycles,2'b00});
+            current_mem_addr = base_addr + ({rd_wait_cycles+1,2'b00});
             out_readdata = saved_readdata;
         end 
         VECTOR_EXIT: begin
             stall = 0;
-            current_mem_addr = base_addr + ({rd_wait_cycles,2'b00});
+            current_mem_addr = base_addr + ({rd_wait_cycles+1,2'b00});
             out_readdata = saved_readdata;
         end 
     endcase

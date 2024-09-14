@@ -2,12 +2,12 @@ module stage_writeback(
 
     input [1:0] wb_result_src,
     // inputs del data path
-    input [31:0] wb_alu_result,
-    input [31:0] wb_read_result,
+    input [127:0] wb_alu_result,
+    input [127:0] wb_read_result,
     input [31:0] wb_pc_plus_4,
-    input [31:0] wb_imm_ext,
+    input [127:0] wb_imm_ext,
     // única salida
-    output reg [31:0] wb_result
+    output reg [127:0] wb_result
 );
 
 always @(*) begin

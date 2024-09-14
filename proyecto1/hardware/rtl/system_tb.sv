@@ -4,7 +4,7 @@ module system_tb;
 
   logic clk;
   logic reset_n;
-  wire [31:0] addr;
+  wire [31:0] instr;
 
   initial begin
     reset_n <= 0;
@@ -22,17 +22,17 @@ module system_tb;
 
  sisa_test dut(
 		.clk_clk(clk),                //          clk.clk
-		.instr_export_instr_if(addr),  // instr_export.instr_if
-		//.instr_export_instr_de,  //             .instr_de
-		//.instr_export_instr_ex,  //             .instr_ex
+		//.instr_export_instr_if(instr),  // instr_export.instr_if
+		//.instr_export_instr_de(instr),  //             .instr_de
+		//.instr_export_instr_ex(instr),  //             .instr_ex
 		//.instr_export_instr_mem, //             .instr_mem
-		//.instr_export_instr_wb,  //             .instr_wb
+		.instr_export_instr_wb(instr),  //             .instr_wb
 		.reset_reset_n(reset_n)           //        reset.reset_n
 	);
 
  
   always @(posedge clk) begin
-    if (addr == 32'h100) begin
+    if (instr == 32'h000001) begin
       #100;
       $display("Simulation ended");
       $stop;

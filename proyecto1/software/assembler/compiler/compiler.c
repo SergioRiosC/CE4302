@@ -50,6 +50,9 @@ const instructions inst[] = {
     {.func_name = "JILT", .func3 = 0b011, .op = 0b110, .func11 = 0b00000000000},
     {.func_name = "JIGE", .func3 = 0b100, .op = 0b110, .func11 = 0b00000000000},
     {.func_name = "JILE", .func3 = 0b101, .op = 0b110, .func11 = 0b00000000000},
+    // vectoriales
+    {.func_name = "LDV", .func3 = 0b100, .op = 0b101, .func11 = 0b00000000000},
+    {.func_name = "STV", .func3 = 0b100, .op = 0b010, .func11 = 0b00000000000},
 };
 typedef struct {
   char* name;
@@ -105,21 +108,21 @@ const reg_spec regs[] = {{.name = "x0", .val = 0},
                          {.name = "t3", .val = 14},
                          {.name = "t4", .val = 15},
                          {.name = "t5", .val = 16},
-                         {.name = "t7", .val = 17},
-                         {.name = "t8", .val = 18},
-                         {.name = "t9", .val = 19},
-                         {.name = "t0", .val = 20},
-                         {.name = "t10", .val = 21},
-                         {.name = "t11", .val = 22},
-                         {.name = "t12", .val = 23},
-                         {.name = "arg0", .val = 24},
-                         {.name = "arg1", .val = 25},
-                         {.name = "arg2", .val = 26},
-                         {.name = "arg3", .val = 27},
-                         {.name = "arg4", .val = 28},
-                         {.name = "arg5", .val = 29},
-                         {.name = "arg6", .val = 30},
-                         {.name = "arg7", .val = 31}};
+                         {.name = "t6", .val = 17},
+                         {.name = "t7", .val = 18},
+                         {.name = "arg0", .val = 19},
+                         {.name = "arg1", .val = 20},
+                         {.name = "arg2", .val = 21},
+                         {.name = "arg3", .val = 22},
+                         {.name = "arg4", .val = 23},
+                         {.name = "v0", .val = 24},
+                         {.name = "v1", .val = 25},
+                         {.name = "v2", .val = 26},
+                         {.name = "v3", .val = 27},
+                         {.name = "v4", .val = 28},
+                         {.name = "v5", .val = 29},
+                         {.name = "v6", .val = 30},
+                         {.name = "v7", .val = 31}};
 
 // funciones
 

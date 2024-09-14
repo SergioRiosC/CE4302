@@ -9,7 +9,7 @@ module stage_decode (
     input [31:0] de_pc_plus4,
 
     // inputs de stage de writeback
-    input [31:0] wb_result,
+    input [127:0] wb_result,
     input wb_reg_write,
     input [4:0] wb_rd,
     
@@ -28,13 +28,14 @@ module stage_decode (
     output reg ex_alu_src_op2,
     output reg ex_pc_target_src,
     output reg [1:0] ex_result_src,
+    output reg ex_vector_op,
 
     // outputs del data path
     output reg [31:0] ex_pc,
     output reg [31:0] ex_pc_plus_4,
     output reg [31:0] ex_imm_ext,
-    output reg [31:0] ex_rd1,
-    output reg [31:0] ex_rd2,
+    output reg [127:0] ex_rd1,
+    output reg [127:0] ex_rd2,
 
     output reg [4:0] ex_rd,
     output reg [4:0] ex_rs1,
@@ -48,8 +49,8 @@ module stage_decode (
 
   // señales internas del stage
   logic [3:0] imm_src;
-  logic [31:0] rd1;
-  logic [31:0] rd2;
+  logic [127:0] rd1;
+  logic [127:0] rd2;
   logic [31:0] imm_out;
   logic reg_write;
   logic mem_write;
@@ -62,6 +63,7 @@ module stage_decode (
   logic [1:0] result_src;
   logic [2:0] jump_cond_type;
   logic [3:0] alu_control;
+  logic vector_op;
 
   logic [4:0] rs1;
   logic [4:0] rs2;
@@ -100,7 +102,8 @@ module stage_decode (
       .alu_src_op2(alu_src_op2),
       .pc_target_src(pc_target_src),
       .imm_src(imm_src),
-      .result_src(result_src)
+      .result_src(result_src),
+      .vector_op(vector_op)
   );
 
   imm_extend imm_ext (
@@ -127,6 +130,7 @@ module stage_decode (
       ex_alu_src_op2    <= 0;
       ex_pc_target_src  <= 0;
       ex_result_src     <= 0;
+      ex_vector_op      <= 0;
 
       // outputs del data path
       ex_pc             <= 0;
@@ -153,6 +157,7 @@ module stage_decode (
       ex_alu_src_op2    <= alu_src_op2;
       ex_pc_target_src  <= pc_target_src;
       ex_result_src     <= result_src;
+      ex_vector_op      <= vector_op;
 
       // outputs del data path
       ex_pc             <= de_pc;

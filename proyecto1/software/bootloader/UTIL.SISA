@@ -8,6 +8,7 @@
 
 /* Funciones de utilidad */
 #define NOP SUM,zero,zero,zero
+#define END_SIMUL SUMI,zero,zero,0
 #define JBA JLRL,zero,lr,0
 #define MOV(rd, rs) SUM,rd,rs,zero
 #define NOT(rd, rs) XORI,rd,rs,-1

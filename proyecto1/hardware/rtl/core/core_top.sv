@@ -61,11 +61,12 @@ module core_top (
   wire ex_alu_src_op2;
   wire ex_pc_target_src;
   wire [1:0] ex_result_src;
+  wire ex_vector_op;
   wire [31:0] ex_pc;
   wire [31:0] ex_pc_plus_4;
   wire [31:0] ex_imm_ext;
-  wire [31:0] ex_rd1;
-  wire [31:0] ex_rd2;
+  wire [127:0] ex_rd1;
+  wire [127:0] ex_rd2;
   wire [4:0] ex_rs1;
   wire [4:0] ex_rs2;
   wire [4:0] ex_rd;
@@ -80,10 +81,11 @@ module core_top (
   wire mem_mem_write;
   wire mem_mem_read;
   wire [1:0] mem_result_src;
-  wire [31:0] mem_alu_result;
-  wire [31:0] mem_write_data;
+  wire mem_vector_op;
+  wire [127:0] mem_alu_result;
+  wire [127:0] mem_write_data;
   wire [31:0] mem_pc_plus_4;
-  wire [31:0] mem_imm_ext;
+  wire [127:0] mem_imm_ext;
   wire [4:0] mem_rd;
 
   // wire de la memoria de datos 
@@ -95,12 +97,12 @@ module core_top (
   wire [31:0] wb_instr;  
   wire wb_reg_write;
   wire [1:0] wb_result_src;
-  wire [31:0] wb_alu_result;
-  wire [31:0] wb_read_result;
+  wire [127:0] wb_alu_result;
+  wire [127:0] wb_read_result;
   wire [31:0] wb_pc_plus_4;
-  wire [31:0] wb_imm_ext;
+  wire [127:0] wb_imm_ext;
   wire [4:0] wb_rd;
-  wire [31:0] wb_result;
+  wire [127:0] wb_result;
 
 
   // ========= Hazard unit ========/ 
@@ -175,6 +177,7 @@ module core_top (
       .ex_alu_src_op2(ex_alu_src_op2),
       .ex_pc_target_src(ex_pc_target_src),
       .ex_result_src(ex_result_src),
+      .ex_vector_op(ex_vector_op),
       .ex_pc(ex_pc),
       .ex_pc_plus_4(ex_pc_plus_4),
       .ex_imm_ext(ex_imm_ext),
@@ -204,6 +207,7 @@ module core_top (
       .ex_alu_src_op2(ex_alu_src_op2),
       .ex_pc_target_src(ex_pc_target_src),
       .ex_result_src(ex_result_src),
+      .ex_vector_op(ex_vector_op),
       .ex_pc(ex_pc),
       .ex_pc_plus_4(ex_pc_plus_4),
       .ex_imm_ext(ex_imm_ext),
@@ -218,6 +222,7 @@ module core_top (
       .mem_mem_write(mem_mem_write),
       .mem_mem_read(mem_mem_read),
       .mem_result_src(mem_result_src),
+      .mem_vector_op(mem_vector_op),
       .mem_alu_result(mem_alu_result),
       .mem_write_data(mem_write_data),
       .mem_pc_plus_4(mem_pc_plus_4),
@@ -242,6 +247,7 @@ module core_top (
       .mem_reg_write(mem_reg_write),
       //.mem_mem_write(mem_mem_write),
       .mem_result_src(mem_result_src),
+      .mem_vector_op(mem_vector_op),
       .mem_alu_result(mem_alu_result),
       .mem_write_data(mem_write_data),
       .mem_pc_plus_4(mem_pc_plus_4),

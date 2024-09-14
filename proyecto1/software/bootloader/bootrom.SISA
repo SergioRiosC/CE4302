@@ -21,7 +21,7 @@ start:
     CLIR, g1,RAM_BASE; # addr 
     STM,  g0,g1,0; # 
     CLIR, g2,0; # i 
-    CLIR, g3,100; # iteraciones
+    CLIR, g3,8; # iteraciones
     loop:
         SUMI, g2,g2,1; # i++
         SUM,  arg0,zero,g1; # pasar a reg de arg0
@@ -30,11 +30,19 @@ start:
         STM,  arg0,g1,NO_OFFSET; # almacenar palabra en RAM         
         JILT, g2,g3,loop; 
 end:
+    CLIR, t0, RAM_BASE; 
+    LDV, v0, t0, 0; 
+    STV, v0, t0, 0x40;
+    NOP;
+    NOP;
+    NOP;
+    NOP;
+    END_SIMUL;
     JLL,zero,end; 
 
 
 gen_numero:
-    LDM,t0,arg0,0; # cargar valor actual 
+    LDV,t0,arg0,0; # cargar valor actual 
 
     ANDI, t1, t0, 0x10; #x^4 
     SLLI, t1, t1, 0x3;  

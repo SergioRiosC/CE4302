@@ -11,15 +11,17 @@ module stage_memory (
     //input mem_mem_write,
     //input mem_mem_read,
     input [1:0] mem_result_src,
+    input mem_vector_op,
 
     // inputs del data path
-    input [31:0] mem_alu_result,
-    input [31:0] mem_write_data,
+    input [127:0] mem_alu_result,
+    input [127:0] mem_write_data,
     input [31:0] mem_pc_plus_4,
-    input [31:0] mem_imm_ext,
+    input [127:0] mem_imm_ext,
     input [ 4:0] mem_rd,
 
-    // input de la memoria de datos 
+    // input de la memoria de datos, es del ancho del puerto de lectura, no 
+    // el ancho del datapath
     input [31:0] mem_read_result,
 
     // debug 
@@ -27,7 +29,7 @@ module stage_memory (
 
     // control de la memoria 
     output reg [31:0] mem_data_memory_addr,
-    output reg [31:0] mem_data_memory_writedata,
+    output reg [31:0] mem_data_memory_writedata, //ancho de mem, no de dato
     output mem_stall_all,
     
     // outputs de control unit
@@ -35,10 +37,10 @@ module stage_memory (
     output reg [1:0] wb_result_src,
 
     // outputs del data path
-    output reg [31:0] wb_alu_result,
-    output reg [31:0] wb_read_result,
+    output reg [127:0] wb_alu_result,
+    output reg [127:0] wb_read_result,
     output reg [31:0] wb_pc_plus_4,
-    output reg [31:0] wb_imm_ext,
+    output reg [127:0] wb_imm_ext,
     output reg [ 4:0] wb_rd
 );
   
@@ -47,18 +49,16 @@ module stage_memory (
   load_store_unit ldstu(
     .clk, 
     .reset(reset),
-    .vector_op(1'b0),
-    .base_addr(mem_alu_result),
-    .in_writedata({96'b0, mem_write_data}), 
+    .vector_op(mem_vector_op),
+    .base_addr(mem_alu_result[31:0]), // ignorar bits altos
+    .in_writedata(mem_write_data), 
     .in_readdata(mem_read_result), 
     .stall(mem_stall_all), // when asserted low, value is ready
     .current_mem_addr(mem_data_memory_addr),
-    .out_readdata(temp_read_proxy), // se ve en wb, no mem
+    // memoria sync
+    .out_readdata(wb_read_result), // se ve en wb, no mem
     .out_writedata(mem_data_memory_writedata)
   );
-
-  // memoria sync
-  assign wb_read_result = temp_read_proxy[31:0];
   
   always @(posedge clk) begin
     if (wb_clear) begin
