@@ -28,7 +28,32 @@ module core_top (
     output [31:0] instr_ex,
     output [31:0] instr_mem,
     output [31:0] instr_wb
+
+    // cpu_regs mem slave 1 (para cpu a sí mismo)
+    // mismo clock del cpu
+    /*input [31:0] s1_address,
+    input s1_read,
+    output [31:0] s1_readdata,
+    input s1_write,
+    input [31:0] s1_writedata,
+    
+    // cpu_regs mem slave 2 (para jtag)
+    input [31:0] s2_address,
+    input s2_read,
+    output [31:0] s2_readdata,
+    input s2_write,
+    input [31:0] s2_writedata,
+    input s_reset*/
 );
+
+  //! TODO: REGISTROS INTERNOS DE PC 
+  /* En buena teoria sería algo como
+    - cycleh (RO) Cuenta ciclos ejecutados, upper 32 bits
+    - cyclel (RO) Cuenta ciclos ejecutados, lower 32 bits 
+    - CLK_MODE (RW): Controla si solo puente el clock o se cambia por la señal de step
+    - STEPS (RW): Down counter. Ejecuta la cantidad de ciclos escritos 
+    - Stall counts?
+  */
 
   assign instr_memory_byteenable = 4'b1111;
   assign data_memory_byteenable = 4'b1111;

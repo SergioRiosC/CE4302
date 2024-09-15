@@ -1,5 +1,5 @@
 #!/bin/sh
-name=bootrom
+name=test
 
 build: clean
 	sh ../assembler/compiler/compile.sh $(name).SISA > output_files/$(name).txt
