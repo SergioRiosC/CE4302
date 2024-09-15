@@ -3,6 +3,8 @@
 module core_top (
     input clk,
     input reset,
+
+    input [31:0] reset_vector_addr,
     
     // instr memory master signals
     //input instr_memory_waitrequest,
@@ -96,6 +98,7 @@ module core_top (
   wire wb_stall;
   wire [31:0] wb_instr;  
   wire wb_reg_write;
+  wire wb_vector_op;
   wire [1:0] wb_result_src;
   wire [127:0] wb_alu_result;
   wire [127:0] wb_read_result;
@@ -143,6 +146,7 @@ module core_top (
   stage_instruction_fetch instf (
       .clk(clk),
       .reset(reset),
+      .reset_vector_addr(reset_vector_addr),
       .de_clear(de_clear),
       .if_stall(if_stall),
       .de_stall(de_stall),
@@ -260,14 +264,17 @@ module core_top (
       .wb_instr(wb_instr),
       .wb_reg_write(wb_reg_write),
       .wb_result_src(wb_result_src),
+      .wb_vector_op(wb_vector_op),
       .wb_alu_result(wb_alu_result),
       .wb_read_result(wb_read_result),
       .wb_pc_plus_4(wb_pc_plus_4),
       .wb_imm_ext(wb_imm_ext),
       .wb_rd(wb_rd)
   );
+
   stage_writeback wb (
       .wb_result_src(wb_result_src),
+      .wb_vector_op(wb_vector_op),
       .wb_alu_result(wb_alu_result),
       .wb_read_result(wb_read_result),
       .wb_pc_plus_4(wb_pc_plus_4),

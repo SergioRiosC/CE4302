@@ -61,6 +61,7 @@ module top (
 		//.instr_export_instr_mem, //             .instr_mem
 		//.instr_export_instr_wb,  //             .instr_wb
 		.reset_reset_n(reset),          //        reset.reset_n
+    .control_reset_vector_addr(0),
     .uart_RXD               (GPIO_0[0]),               //         uart.RXD
 		.uart_TXD               (GPIO_0[1])
 	);

@@ -121,6 +121,30 @@
          type = "String";
       }
    }
+   element sisa_test
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
+         type = "String";
+      }
+   }
+   element sisa_test
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
+         type = "String";
+      }
+   }
+   element sisa_test
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
+         type = "String";
+      }
+   }
 }
 ]]></parameter>
  <parameter name="clockCrossingAdapter" value="HANDSHAKE" />
@@ -143,12 +167,14 @@
  <parameter name="useTestBenchNamingPattern" value="false" />
  <instanceScript></instanceScript>
  <interface name="clk" internal="clk_0.clk_in" type="clock" dir="end" />
+ <interface name="control" internal="SISA_0.control" type="conduit" dir="end" />
  <interface
    name="instr_export"
    internal="SISA_0.instr_export"
    type="conduit"
    dir="end" />
  <interface name="reset" internal="clk_0.clk_in_reset" type="reset" dir="end" />
+ <interface name="reset_vector_addr" internal="SISA_0.reset_vector_addr" />
  <interface
    name="uart"
    internal="rs232_0.external_interface"

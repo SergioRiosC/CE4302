@@ -35,6 +35,7 @@ module stage_memory (
     // outputs de control unit
     output reg wb_reg_write,
     output reg [1:0] wb_result_src,
+    output reg wb_vector_op,
 
     // outputs del data path
     output reg [127:0] wb_alu_result,
@@ -64,6 +65,8 @@ module stage_memory (
     if (wb_clear) begin
       wb_reg_write <= 0;
       wb_result_src <= 0;
+      wb_vector_op <= 0;
+
       wb_alu_result <= 0;
       wb_pc_plus_4 <= 0;
       wb_imm_ext <= 0;
@@ -74,6 +77,8 @@ module stage_memory (
 
       wb_reg_write <= mem_reg_write;
       wb_result_src <= mem_result_src;
+      wb_vector_op <= mem_vector_op;
+      
       wb_alu_result <= mem_alu_result;
       wb_pc_plus_4 <= mem_pc_plus_4;
       wb_imm_ext <= mem_imm_ext;

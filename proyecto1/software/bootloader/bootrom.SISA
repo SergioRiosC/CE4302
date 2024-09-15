@@ -33,6 +33,12 @@ end:
     CLIR, t0, RAM_BASE; 
     LDV, v0, t0, 0; 
     STV, v0, t0, 0x40;
+    LDV, v0, t0, 0x40; 
+    STV, v0, t0, 0x80;
+
+    CLIR, t1, 0xDEAD;
+    STV, t1, t0, 0x90;
+
     NOP;
     NOP;
     NOP;

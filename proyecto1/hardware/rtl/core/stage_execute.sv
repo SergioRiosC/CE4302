@@ -47,7 +47,7 @@ module stage_execute (
     output reg [127:0] mem_alu_result,
     output reg [127:0] mem_write_data,
     output reg [31:0] mem_pc_plus_4,
-    output reg [31:0] mem_imm_ext,
+    output reg [127:0] mem_imm_ext,
     output reg [ 4:0] mem_rd,
 
     // output a otras etapas que no son la inmediatamente siguiente
@@ -69,9 +69,7 @@ module stage_execute (
   logic jump_cond_true;
   logic [127:0] alu_result;
   reg [127:0] mem_alu_result_proxy;
-
   
-
   always @(*) begin
     case (ex_op1_forward)
       2'b01:   pre_op1 = wb_result;
@@ -81,7 +79,7 @@ module stage_execute (
 
     case (ex_op2_forward)
       2'b01:   write_data = wb_result;
-      2'b10:   write_data = mem_alu_result_proxy;
+      2'b10:   write_data = {4{mem_alu_result_proxy[31:0]}};
       default: write_data = ex_rd2;
     endcase
   end
