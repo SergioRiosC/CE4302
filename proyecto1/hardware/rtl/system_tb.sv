@@ -20,7 +20,7 @@ module system_tb;
   end
   
 
- sisa_test dut(
+ sisa_final dut(
 		.clk_clk(clk),                //          clk.clk
 		.reset_reset_n(reset_n),           //        reset.reset_n
 		//.instr_export_instr_if(instr),  // instr_export.instr_if

@@ -27,24 +27,26 @@ module core_top (
     output [31:0] instr_de,
     output [31:0] instr_ex,
     output [31:0] instr_mem,
-    output [31:0] instr_wb
+    output [31:0] instr_wb,
 
     // cpu_regs mem slave 1 (para cpu a sí mismo)
     // mismo clock del cpu
-    /*input [31:0] s1_address,
+    input [5:0] s1_address,
     input s1_read,
     output [31:0] s1_readdata,
     input s1_write,
     input [31:0] s1_writedata,
     
     // cpu_regs mem slave 2 (para jtag)
-    input [31:0] s2_address,
+    input [5:0] s2_address,
     input s2_read,
     output [31:0] s2_readdata,
     input s2_write,
     input [31:0] s2_writedata,
-    input s_reset*/
+    input s_reset
 );
+    assign s1_readdata = 32'b0;
+    assign s2_readdata = 32'b0;
 
   //! TODO: REGISTROS INTERNOS DE PC 
   /* En buena teoria sería algo como
