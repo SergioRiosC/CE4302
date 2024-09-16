@@ -109,9 +109,11 @@ module control_unit (
           end
         endcase
       end
-      /*OP_E: begin 
-            
-        end*/
+      OP_E: begin  // vectorial
+        alu_control = {func11[0],func3};
+        imm_src = 4'b0;  // no importa
+        result_src = RESULT_SRC_ALURES;
+      end
       OP_F: begin
         alu_control = 4'b0;  // suma dir de ldm o registro de jump + label
         imm_src = 4'b0000;  // inmediato con extensión de signo

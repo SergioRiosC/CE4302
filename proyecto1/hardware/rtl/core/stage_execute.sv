@@ -67,7 +67,10 @@ module stage_execute (
   logic [127:0] op2;
   logic [3:0] alu_flags;
   logic jump_cond_true;
+  logic alu_sel;
   logic [127:0] alu_result;
+  logic [31:0] scal_alu_result;
+  logic [127:0] vector_alu_result;
   reg [127:0] mem_alu_result_proxy;
   
   always @(*) begin
@@ -94,12 +97,23 @@ module stage_execute (
 
   //! agregar vector op aca
   alu alu0 (
+      .op1(op1[31:0]),
+      .op2(op2[31:0]),
+      .alu_control(ex_alu_control),
+      .flags(alu_flags),
+      .result(scal_alu_result)
+  );
+
+  vector_alu valu0 (
       .op1(op1),
       .op2(op2),
       .alu_control(ex_alu_control),
-      .flags(alu_flags),
-      .result(alu_result[31:0])
+      .result(vector_alu_result)
   );
+  
+  // seleccionar escalar si la OP no es vectorial o es de memoria (alu calcula addr)
+  assign alu_sel = (~ex_vector_op) | ex_mem_read | ex_mem_write; 
+  assign alu_result = (alu_sel) ? {4{scal_alu_result}} : vector_alu_result;
 
   assign op1 = (ex_alu_src_op1) ? pre_op1 : 127'b0;
   assign op2 = (ex_alu_src_op2) ? ex_imm_ext : write_data;
