@@ -415,7 +415,7 @@ set_location_assignment PIN_AD10 -to SW[8]
 set_location_assignment PIN_AE12 -to SW[9]
 
 
-set_global_assignment -name EDA_SIMULATION_TOOL "ModelSim-Altera (SystemVerilog)"
+set_global_assignment -name EDA_SIMULATION_TOOL "ModelSim (SystemVerilog)"
 set_global_assignment -name QSYS_FILE sisa_final.qsys
 set_global_assignment -name SYSTEMVERILOG_FILE ../rtl/system_tb.sv
 set_global_assignment -name SYSTEMVERILOG_FILE ../rtl/top.sv
