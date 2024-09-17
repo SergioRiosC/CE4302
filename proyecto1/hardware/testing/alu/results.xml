@@ -1,8 +1,6 @@
 <testsuites name="results">
   <testsuite name="all" package="all">
-    <property name="random_seed" value="1726553007" />
-    <testcase name="alu_test" classname="test_alu" file="/mnt/c/Users/sergi/Desktop/testing/alu/test_alu.py" lineno="85" time="0.0011911392211914062" sim_time_ns="6.001" ratio_time="5038.034088070457">
-      <failure message="Test failed with RANDOM_SEED=1726553007" />
-    </testcase>
+    <property name="random_seed" value="1726600733" />
+    <testcase name="alu_tb" classname="x" file="/mnt/c/Users/sergi/Desktop/testing/alu/x.py" lineno="4" time="0.001703500747680664" sim_time_ns="10.001" ratio_time="5870.851547095871" />
   </testsuite>
 </testsuites>
