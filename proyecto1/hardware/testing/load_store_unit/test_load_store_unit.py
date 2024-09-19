@@ -1,39 +1,60 @@
 import cocotb
-from cocotb.triggers import RisingEdge, FallingEdge
 from cocotb.clock import Clock
-from cocotb.result import TestFailure
+from cocotb.triggers import RisingEdge, Timer
 
-# Definimos el test principal
+# Definir casos de prueba
+test_cases = [
+    # (reset, vector_op, base_addr, in_writedata, in_readdata, expected_stall, expected_mem_addr, expected_out_readdata, expected_out_writedata)
+    (1, 0, 0x1000, 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF, 0x12345678, 0, 0x1000, 0x12345678, 0xFFFFFFFF),
+    (0, 1, 0x2000, 0xAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA, 0x87654321, 1, 0x2000, 0x87654321, 0xAAAAAAAA),
+    (0, 1, 0x2000, 0xBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB, 0x12345678, 1, 0x2008, 0x87654321, 0xBBBBBBBB),
+    (0, 0, 0x3000, 0xCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC, 0x87654321, 0, 0x3000, 0x87654321123456781234567887654321, 0xCCCCCCCC),
+]
+
 @cocotb.test()
-async def test_top(dut):
-    """ Test básico para verificar el comportamiento del reset y el clock """
-
-    # Inicializamos el reloj a 50 MHz
-    cocotb.start_soon(Clock(dut.CLOCK_50, 20, units="ns").start())  # 20ns para 50MHz
-
-    # Inicializamos el reset
-    dut.SW[0].value = 1  # Reset activado
-    dut.SW[1].value = 0  # Modo normal (sin debug)
+async def load_store_unit_test(dut):
+    """Testbench para la unidad de carga/almacenamiento"""
     
-    # Esperamos algunos ciclos de reloj con reset activado
-    for _ in range(5):
-        await RisingEdge(dut.CLOCK_50)
+    # Reloj
+    cocotb.start_soon(Clock(dut.clk, 20, units="ns").start())  # 20ns para 50MHz
+
+    # Tiempos para reset se estabilice
     
-    # Desactivamos el reset
-    dut.SW[0].value = 0
+    dut.reset.value = 1
+    await RisingEdge(dut.clk)  
+    await RisingEdge(dut.clk)  
 
-    # Verificamos que la señal addr[0] reflejada en LEDR[0] cambie con el tiempo
-    previous_ledr = dut.LEDR[0].value
-    for _ in range(10):  # Verificamos durante algunos ciclos de reloj
-        await RisingEdge(dut.CLOCK_50)
-        current_ledr = dut.LEDR[0].value
+    dut.reset.value = 0
+    await RisingEdge(dut.clk)
 
-        if current_ledr != previous_ledr:
-            dut._log.info(f"LEDR[0] cambió: {previous_ledr} -> {current_ledr}")
-        previous_ledr = current_ledr
 
-    # Si no hubo cambios, fallamos la prueba
-    if previous_ledr == dut.LEDR[0].value:
-        raise TestFailure("LEDR[0] no cambió durante la simulación")
 
-    dut._log.info("Prueba completada con éxito.")
+    for i,(case) in enumerate(test_cases):
+        reset, vector_op, base_addr, in_writedata, in_readdata, expected_stall, expected_mem_addr, expected_out_readdata, expected_out_writedata = case
+
+        # Entradas
+        dut.reset.value = reset
+        dut.vector_op.value = vector_op
+        dut.base_addr.value = base_addr
+        dut.in_writedata.value = in_writedata
+        dut.in_readdata.value = in_readdata
+
+        
+        await RisingEdge(dut.clk)
+
+        
+        # Salidas
+        assert dut.stall.value == expected_stall, \
+            f"Fallo en test {i} 'stall', esperado: {expected_stall}, obtenido: {dut.stall.value}"
+
+        assert dut.current_mem_addr.value == expected_mem_addr, \
+            f"Fallo en test {i} 'current_mem_addr', esperado: {expected_mem_addr}, obtenido: {dut.current_mem_addr.value}"
+
+        assert dut.out_readdata.value == expected_out_readdata, \
+            f"Fallo en test {i} 'out_readdata', esperado: {expected_out_readdata}, obtenido: {hex(dut.out_readdata.value)}"
+
+        assert dut.out_writedata.value == expected_out_writedata, \
+            f"Fallo en test {i} 'out_writedata', esperado: {expected_out_writedata}, obtenido: {dut.out_writedata.value}"
+
+        # Resetear para siguiente test
+        await RisingEdge(dut.clk)
