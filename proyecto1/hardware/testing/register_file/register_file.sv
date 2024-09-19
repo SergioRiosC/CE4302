@@ -29,5 +29,15 @@ module register_file (
       end
     end
   end
-
+  initial begin
+      integer i;
+      // Inicialización de los registros escalares
+      for (i = 0; i < 25; i = i + 1) begin
+          sreg[i] = 32'b0;
+      end
+      // Inicialización de los registros vectoriales
+      for (i = 0; i < 8; i = i + 1) begin
+          vreg[i] = 128'b0;
+      end
+  end
 endmodule

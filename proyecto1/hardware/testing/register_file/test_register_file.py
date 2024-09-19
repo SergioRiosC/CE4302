@@ -1,39 +1,51 @@
 import cocotb
-from cocotb.triggers import RisingEdge, FallingEdge
 from cocotb.clock import Clock
-from cocotb.result import TestFailure
+from cocotb.triggers import RisingEdge
 
-# Definimos el test principal
+
+
+test_cases = [
+        # we3, a1, a2, a3, wd3, expected_rd1, expected_rd2
+        (1, 3, 4, 3, 0x11111111111111111111111111111111, (0x11111111111111111111111111111111, 0)),
+        (1, 0, 2, 5, 0x22222222222222222222222222222222, (0, 0)),
+        (1, 3, 4, 7, 0x33333333333333333333333333333333, (0x11111111111111111111111111111111, 0x00000000000000000000000000000000)),
+        (0, 1, 7, 5, 0x44444444444444444444444444444444, (0, 0x33333333333333333333333333333333)),
+        (1, 24, 25, 0, 0x55555555555555555555555555555555, (0, 0))
+    ]
+
 @cocotb.test()
-async def test_top(dut):
-    """ Test básico para verificar el comportamiento del reset y el clock """
+async def register_file_test(dut):
+    """Testbench para el módulo register_file"""
 
-    # Inicializamos el reloj a 50 MHz
-    cocotb.start_soon(Clock(dut.CLOCK_50, 20, units="ns").start())  # 20ns para 50MHz
-
-    # Inicializamos el reset
-    dut.SW[0].value = 1  # Reset activado
-    dut.SW[1].value = 0  # Modo normal (sin debug)
+    # Reloj
+    cocotb.start_soon(Clock(dut.clk, 20, units="ns").start())  # 20ns para 50MHz
+    await RisingEdge(dut.clk)
+    await RisingEdge(dut.clk)
     
-    # Esperamos algunos ciclos de reloj con reset activado
-    for _ in range(5):
-        await RisingEdge(dut.CLOCK_50)
+
+    for i, (we3, a1, a2, a3, wd3, expected) in enumerate(test_cases):
+        
+
+        # Entradas
+        dut.we3.value = we3
+        dut.a1.value = a1
+        dut.a2.value = a2
+        dut.a3.value = a3
+        dut.wd3.value = wd3
+
+        await RisingEdge(dut.clk)
+        await RisingEdge(dut.clk)
+        await RisingEdge(dut.clk)  
     
-    # Desactivamos el reset
-    dut.SW[0].value = 0
 
-    # Verificamos que la señal addr[0] reflejada en LEDR[0] cambie con el tiempo
-    previous_ledr = dut.LEDR[0].value
-    for _ in range(10):  # Verificamos durante algunos ciclos de reloj
-        await RisingEdge(dut.CLOCK_50)
-        current_ledr = dut.LEDR[0].value
+        (exp_rd1, exp_rd2) = expected
 
-        if current_ledr != previous_ledr:
-            dut._log.info(f"LEDR[0] cambió: {previous_ledr} -> {current_ledr}")
-        previous_ledr = current_ledr
 
-    # Si no hubo cambios, fallamos la prueba
-    if previous_ledr == dut.LEDR[0].value:
-        raise TestFailure("LEDR[0] no cambió durante la simulación")
+        # Salidas
+        assert hex(dut.rd1.value) == hex(exp_rd1), \
+            f"Fallo de test {i} en 'rd1', esperado: {hex(exp_rd1)}, obtenido: {hex(dut.rd1.value)}"
+        assert hex(dut.rd2.value) == hex(exp_rd2), \
+            f"Fallo de test {i} en 'rd2', esperado: {hex(exp_rd2)}, obtenido: {hex(dut.rd2.value)}"
 
-    dut._log.info("Prueba completada con éxito.")
+        # Resetear para siguiente test
+        await RisingEdge(dut.clk)
