@@ -1,5 +1,4 @@
 #!/bin/sh
-
 if [ $0 = "/usr/bin/bash" -o $0 = "/bin/bash" -o $0 = "bash" -o $0 = "-bash" ]; then
     COMPILER_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 elif [ $0 = "sh" ]; then

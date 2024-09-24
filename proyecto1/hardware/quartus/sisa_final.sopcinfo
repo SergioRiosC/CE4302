@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <EnsembleReport name="sisa_final" kind="sisa_final" version="1.0" fabric="QSYS">
  <!-- Format version 18.1 625 (Future versions may contain additional information.) -->
- <!-- 2024.09.18.23:24:23 -->
+ <!-- 2024.09.24.00:25:40 -->
  <!-- A collection of modules and connections -->
  <parameter name="AUTO_GENERATION_ID">
   <type>java.lang.Integer</type>
-  <value>1726723463</value>
+  <value>1727159140</value>
   <derived>false</derived>
   <enabled>true</enabled>
   <visible>false</visible>
@@ -2237,7 +2237,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="initializationFileName">
    <type>java.lang.String</type>
-   <value>/home/josfemova-rs/REPOSITORIES/CE4302/proyecto1/software/implementacion_aes/asm/bootrom/output_files/bootrom.hex</value>
+   <value>C:/Users/sergi/Desktop/TEC_DRIVE/OneDrive - Estudiantes ITCR/TEC/2024/2/ARQUI II/PROYECTOS/Proyecto 1/Proyecto git final/proyecto1/software/implementacion_aes/asm/bootrom/output_files/bootrom.hex</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -2448,7 +2448,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="derived_init_file_name">
    <type>java.lang.String</type>
-   <value>/home/josfemova-rs/REPOSITORIES/CE4302/proyecto1/software/implementacion_aes/asm/bootrom/output_files/bootrom.hex</value>
+   <value>C:/Users/sergi/Desktop/TEC_DRIVE/OneDrive - Estudiantes ITCR/TEC/2024/2/ARQUI II/PROYECTOS/Proyecto 1/Proyecto git final/proyecto1/software/implementacion_aes/asm/bootrom/output_files/bootrom.hex</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>false</visible>
@@ -6010,7 +6010,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="initializationFileName">
    <type>java.lang.String</type>
-   <value>/home/josfemova-rs/REPOSITORIES/CE4302/proyecto1/software/implementacion_aes/asm/escalar/output_files/rsbox.hex</value>
+   <value>C:/Users/sergi/Desktop/TEC_DRIVE/OneDrive - Estudiantes ITCR/TEC/2024/2/ARQUI II/PROYECTOS/Proyecto 1/Proyecto git final/proyecto1/software/implementacion_aes/asm/escalar/output_files/rsbox.hex</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -6221,7 +6221,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="derived_init_file_name">
    <type>java.lang.String</type>
-   <value>/home/josfemova-rs/REPOSITORIES/CE4302/proyecto1/software/implementacion_aes/asm/escalar/output_files/rsbox.hex</value>
+   <value>C:/Users/sergi/Desktop/TEC_DRIVE/OneDrive - Estudiantes ITCR/TEC/2024/2/ARQUI II/PROYECTOS/Proyecto 1/Proyecto git final/proyecto1/software/implementacion_aes/asm/escalar/output_files/rsbox.hex</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>false</visible>
@@ -7255,7 +7255,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="initializationFileName">
    <type>java.lang.String</type>
-   <value>/home/josfemova-rs/REPOSITORIES/CE4302/proyecto1/software/implementacion_aes/asm/escalar/output_files/sbox.hex</value>
+   <value>C:/Users/sergi/Desktop/TEC_DRIVE/OneDrive - Estudiantes ITCR/TEC/2024/2/ARQUI II/PROYECTOS/Proyecto 1/Proyecto git final/proyecto1/software/implementacion_aes/asm/escalar/output_files/sbox.hex</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -7466,7 +7466,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="derived_init_file_name">
    <type>java.lang.String</type>
-   <value>/home/josfemova-rs/REPOSITORIES/CE4302/proyecto1/software/implementacion_aes/asm/escalar/output_files/sbox.hex</value>
+   <value>C:/Users/sergi/Desktop/TEC_DRIVE/OneDrive - Estudiantes ITCR/TEC/2024/2/ARQUI II/PROYECTOS/Proyecto 1/Proyecto git final/proyecto1/software/implementacion_aes/asm/escalar/output_files/sbox.hex</value>
    <derived>true</derived>
    <enabled>true</enabled>
    <visible>false</visible>

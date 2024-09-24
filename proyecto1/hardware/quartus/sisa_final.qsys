@@ -212,7 +212,7 @@
   <parameter name="enPRInitMode" value="false" />
   <parameter name="enableDiffWidth" value="false" />
   <parameter name="initMemContent" value="true" />
-  <parameter name="initializationFileName">/home/josfemova-rs/REPOSITORIES/CE4302/proyecto1/software/implementacion_aes/asm/bootrom/output_files/bootrom.hex</parameter>
+  <parameter name="initializationFileName">C:/Users/sergi/Desktop/TEC_DRIVE/OneDrive - Estudiantes ITCR/TEC/2024/2/ARQUI II/PROYECTOS/Proyecto 1/Proyecto git final/proyecto1/software/implementacion_aes/asm/bootrom/output_files/bootrom.hex</parameter>
   <parameter name="instanceID" value="inst" />
   <parameter name="memorySize" value="8192" />
   <parameter name="readDuringWriteMode" value="DONT_CARE" />
@@ -303,7 +303,7 @@
   <parameter name="enPRInitMode" value="false" />
   <parameter name="enableDiffWidth" value="false" />
   <parameter name="initMemContent" value="true" />
-  <parameter name="initializationFileName">/home/josfemova-rs/REPOSITORIES/CE4302/proyecto1/software/implementacion_aes/asm/escalar/output_files/rsbox.hex</parameter>
+  <parameter name="initializationFileName">C:/Users/sergi/Desktop/TEC_DRIVE/OneDrive - Estudiantes ITCR/TEC/2024/2/ARQUI II/PROYECTOS/Proyecto 1/Proyecto git final/proyecto1/software/implementacion_aes/asm/escalar/output_files/rsbox.hex</parameter>
   <parameter name="instanceID" value="NONE" />
   <parameter name="memorySize" value="1024" />
   <parameter name="readDuringWriteMode" value="DONT_CARE" />
@@ -335,7 +335,7 @@
   <parameter name="enPRInitMode" value="false" />
   <parameter name="enableDiffWidth" value="false" />
   <parameter name="initMemContent" value="true" />
-  <parameter name="initializationFileName">/home/josfemova-rs/REPOSITORIES/CE4302/proyecto1/software/implementacion_aes/asm/escalar/output_files/sbox.hex</parameter>
+  <parameter name="initializationFileName">C:/Users/sergi/Desktop/TEC_DRIVE/OneDrive - Estudiantes ITCR/TEC/2024/2/ARQUI II/PROYECTOS/Proyecto 1/Proyecto git final/proyecto1/software/implementacion_aes/asm/escalar/output_files/sbox.hex</parameter>
   <parameter name="instanceID" value="NONE" />
   <parameter name="memorySize" value="1024" />
   <parameter name="readDuringWriteMode" value="DONT_CARE" />
